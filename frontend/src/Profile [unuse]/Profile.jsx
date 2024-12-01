@@ -73,13 +73,12 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        mode: 'no-cors', // Enable CORS for cross-origin requests
       });
       const data = await res.json();
       if (data.success === false) {
@@ -97,9 +96,8 @@ export default function Profile() {
   const handleDeleteAccount = async () => {
     try {
       dispatch(deleteUserStart);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/delete/${currentUser._id}`, {
-        method: 'DELETE',
-        mode: 'no-cors', // Enable CORS for cross-origin requests
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE'
       });
       const data = await res.json();
       if (data.success === false) {
@@ -114,7 +112,7 @@ export default function Profile() {
 
   const handleSignOut = async () => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/auth/signout`)
+      await fetch('/api/auth/signout')
       dispatch(signOut());
     } catch (error) {
       console.error('Error signing out', error);

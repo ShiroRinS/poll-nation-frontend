@@ -20,13 +20,12 @@ export default function SignUp() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
+      const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-        mode: 'no-cors', // Enable CORS for cross-origin requests
       });
       const data = await res.json();
       console.log(data);
@@ -66,6 +65,14 @@ export default function SignUp() {
           type="password"
           placeholder="Password"
           id="password"
+          className="bg-slate-100 p-3 rounded-lg"
+          onChange={handleChange}
+        />
+
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          id="confirmPassword"
           className="bg-slate-100 p-3 rounded-lg"
           onChange={handleChange}
         />

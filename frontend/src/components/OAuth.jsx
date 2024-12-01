@@ -15,7 +15,7 @@ export default function OAuth() {
 
         const result = await signInWithPopup(auth, provider);
         // console.log(result);
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/google`, {
+        const res = await fetch('api/auth/google', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -25,7 +25,6 @@ export default function OAuth() {
                 email: result.user.email,
                 photo: result.user.photoURL,
             }),
-            mode: 'no-cors', // Enable CORS for cross-origin requests
         })
         const data = await res.json();
         console.log(data);

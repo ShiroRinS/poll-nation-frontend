@@ -17,12 +17,11 @@ function EditPollQuiz() {
     // Fetch the existing poll or quiz data
     const fetchData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/poll-and-quiz/find/${postId}`, {
+        const response = await fetch(`/api/poll-and-quiz/find/${postId}`, {
           headers: {
             "Content-Type": "application/json",
           },
           credentials: "include", // Include credentials to send cookies
-          mode: 'no-cors', // Enable CORS for cross-origin requests
         });
         const data = await response.json();
 
@@ -71,14 +70,13 @@ function EditPollQuiz() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/poll-and-quiz/update/${postId}`, {
+      const response = await fetch(`/api/poll-and-quiz/update/${postId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ question, options }),
         credentials: "include",
-        mode: 'no-cors', // Enable CORS for cross-origin requests
       });
 
       const data = await response.json();

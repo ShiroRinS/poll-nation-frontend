@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef} from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import styles from "./Poll.module.css";
+import { useSelector } from "react-redux";
+// import { signOut } from "../../redux/user/userSlice";
 
 function PollAll() {
   const [pollQuizData, setPollQuizData] = useState([]);
@@ -10,22 +11,24 @@ function PollAll() {
   const [visibleComments, setVisibleComments] = useState({});
   const [commentInputs, setCommentInputs] = useState({});
   const [loadingPostId, setLoadingPostId] = useState(null);
+  const [deletingCommentId, setDeletingCommentId] = useState(null);
+  const [editingComment, setEditingComment] = useState(null);
+  const [editingContent, setEditingContent] = useState({});
+  const [editingLoading, setEditingLoading] = useState(false);
   const navigate = useNavigate();
+
   const currentUser = useSelector((state) => state.user.currentUser); // Adjust based on your state structure
 
   const [answeredOptionData, setAnsweredOptionData] = useState([]); // All OptionIDs that this user has answered
   const [answeredQuestionData, setAnsweredQuestionData] = useState([]); // All QuestionIDs that this user has answered
   const [voteCounts, setVoteCounts] = useState([]);
-  
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/poll-and-quiz/all`, {
+        const response = await fetch("/api/poll-and-quiz/all", {
           method: "GET",
           credentials: "include",
-          mode: 'cors', // Enable CORS for cross-origin requests
         });
 
         if (!response.ok) {
@@ -61,13 +64,12 @@ function PollAll() {
       }
   
       // Send the request to the new unified endpoint
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/vote/voting`, {
+      const response = await fetch("/api/vote/voting", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        mode: 'cors', // Enable CORS for cross-origin requests
         body: JSON.stringify({
           userId,
           postId,
@@ -100,10 +102,9 @@ function PollAll() {
 const preSelectOptions = async () => {
   try {
     console.log("**************** Load Selected Options called! **************** ")
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/vote/myanswers`, {
+    const response = await fetch("/api/vote/myanswers", {
       method: "GET",
       credentials: "include",
-      mode: 'cors', // Enable CORS for cross-origin requests
       headers: {
         "Authorization": `Bearer ${currentUser?.token}`,
       },
@@ -162,10 +163,9 @@ useEffect(() => {
 
     if (!visibleComments[postId] && !comments[postId]) {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/comments/find/posts/${postId}`, {
+        const response = await fetch(`/api/comments/find/posts/${postId}`, {
           method: "GET",
           credentials: "include",
-          mode: 'cors', // Enable CORS for cross-origin requests
         });
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -179,17 +179,21 @@ useEffect(() => {
   };
 
   const handleAddComment = async (postId) => {
+    if (!currentUser) {
+      alert("Please log in to add a comment.");
+      return;
+    }
+
     if (commentInputs[postId]?.trim() === "") return;
     setLoadingPostId(postId);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/comments/create`, {
+      const response = await fetch("/api/comments/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        mode: 'cors', // Enable CORS for cross-origin requests
         body: JSON.stringify({
           postId,
           content: commentInputs[postId],
@@ -213,19 +217,97 @@ useEffect(() => {
     }
   };
 
+  const handleDeleteComment = async (postId, commentId) => {
+
+    if (!currentUser) {
+      alert("Please log in to delete a comment.");
+      return;
+    }
+
+    // Show confirmation alert
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this comment? This action cannot be undone."
+    );
+
+    // If user cancels, exit the function
+    if (!confirmDelete) {
+      return;
+    }
+    setDeletingCommentId(commentId);
+    try {
+      const response = await fetch(`/api/comments/delete/${commentId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      setComments((prev) => ({
+        ...prev,
+        [postId]: prev[postId]?.filter((comment) => comment._id !== commentId),
+      }));
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    } finally {
+      setDeletingCommentId(null);
+    }
+  };
+
+  const handleEditComment = async (postId, commentId) => {
+
+    if (!currentUser) {
+      alert("Please log in to edit a comment.");
+      return;
+    }
+
+    if (!editingContent[commentId]?.trim()) {
+      alert("Comment content cannot be empty.");
+      return;
+    }
+
+    setEditingLoading(true);
+
+    try {
+      const response = await fetch(`/api/comments/edit/${commentId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ content: editingContent[commentId] }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const updatedComment = await response.json();
+
+      setComments((prev) => ({
+        ...prev,
+        [postId]: prev[postId]?.map((comment) =>
+          comment._id === commentId ? updatedComment : comment
+        ),
+      }));
+
+      setEditingComment(null);
+      setEditingContent((prev) => ({ ...prev, [commentId]: "" }));
+    } catch (error) {
+      console.error("Error editing comment:", error);
+    } finally {
+      setEditingLoading(false);
+    }
+  };
+
+  const handleEditInputChange = (commentId, value) => {
+    setEditingContent((prev) => ({ ...prev, [commentId]: value }));
+  };
+
   const handleInputChange = (postId, value) => {
     setCommentInputs((prev) => ({ ...prev, [postId]: value }));
   };
-
-  // const handleLogout = () => {
-  //   // Clear user session (e.g., Redux state or cookies)
-  //   dispatch(logoutUserAction()); // Adjust based on your logout logic
-  
-  //   // Clear poll/quiz states
-  //   setAnsweredOptionData([]);
-  //   setAnsweredQuestionData([]);
-  //   setVoteCounts([]); // Clear vote counts if stored
-  // };
 
   useEffect(() => {
   if (!currentUser) {
@@ -239,10 +321,9 @@ useEffect(() => {
   // Fetch user's answers if logged in
   const fetchAnswers = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/vote/myanswers`, {
+      const response = await fetch("/api/vote/myanswers", {
         method: "GET",
         credentials: "include",
-        mode: 'cors', // Enable CORS for cross-origin requests
         headers: {
           "Authorization": `Bearer ${currentUser.token}`,
         },
@@ -363,6 +444,7 @@ return (
           >
             {visibleComments[item._id] ? "Hide Comments" : "View Comments"}
           </button>
+          
           {visibleComments[item._id] && (
             <div className={styles.commentsContainer}>
               <h3 className={styles.commentsTitle}>Comments</h3>
@@ -377,6 +459,7 @@ return (
                       src={
                         comment.userId?.profilePicture &&
                         comment.userId.profilePicture.trim() !== ""
+
                           ? comment.userId.profilePicture
                           : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                       }
@@ -387,8 +470,62 @@ return (
                       <strong className={styles.commentAuthor}>
                         {comment.userId?.username || "Unknown"}
                       </strong>
-                      <span>{comment.content}</span>
+
+                      {editingComment === comment._id ? (
+                        <>
+                          <textarea
+                            value={
+                              editingContent[comment._id] !== undefined
+                                ? editingContent[comment._id]
+                                : comment.content
+                            }
+                            onChange={(e) =>
+                              handleEditInputChange(comment._id, e.target.value)
+                            }
+                            className={styles.editCommentInput}
+                          />
+                          <button
+                            onClick={() =>
+                              handleEditComment(item._id, comment._id)
+                            }
+                            className={styles.commentEditSaveButton}
+                            disabled={editingLoading}
+                          >
+                            {editingLoading ? "Saving..." : "Save"}
+                          </button>
+                          <button
+                            onClick={() => setEditingComment(null)}
+                            className={styles.commentEditCancelButton}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <span>{comment.content}</span>
+                      )}
                     </div>
+
+                    {currentUser && currentUser._id === comment.userId?._id && (
+                      <>
+                        <button
+                          onClick={() => setEditingComment(comment._id)}
+                          className={styles.commentEditButton}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleDeleteComment(item._id, comment._id)
+                          }
+                          className={styles.commentDeleteButton}
+                          disabled={deletingCommentId === comment._id}
+                        >
+                          {deletingCommentId === comment._id
+                            ? "Deleting..."
+                            : "Delete"}
+                        </button>
+                      </>
+                    )}
                   </div>
                 ))
               )}
