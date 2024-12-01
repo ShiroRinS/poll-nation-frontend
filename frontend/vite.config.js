@@ -10,14 +10,4 @@ export default defineConfig({
       plugins: [tailwindcss()],
     },
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://3.95.212.66:3000',
-        changeOrigin: true,
-        secure: false
-
-      }
-    }
-  }
 })
