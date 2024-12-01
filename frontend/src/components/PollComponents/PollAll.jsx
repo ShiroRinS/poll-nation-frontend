@@ -22,7 +22,7 @@ function PollAll() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/poll-and-quiz/all", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/poll-and-quiz/all`, {
           method: "GET",
           credentials: "include",
         });
@@ -60,7 +60,7 @@ function PollAll() {
       }
   
       // Send the request to the new unified endpoint
-      const response = await fetch("/api/vote/voting", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/vote/voting`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +98,7 @@ function PollAll() {
 const preSelectOptions = async () => {
   try {
     console.log("**************** Load Selected Options called! **************** ")
-    const response = await fetch("/api/vote/myanswers", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/vote/myanswers`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -159,7 +159,7 @@ useEffect(() => {
 
     if (!visibleComments[postId] && !comments[postId]) {
       try {
-        const response = await fetch(`/api/comments/find/posts/${postId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/comments/find/posts/${postId}`, {
           method: "GET",
           credentials: "include",
         });
@@ -179,7 +179,7 @@ useEffect(() => {
     setLoadingPostId(postId);
 
     try {
-      const response = await fetch("/api/comments/create", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/comments/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -234,7 +234,7 @@ useEffect(() => {
   // Fetch user's answers if logged in
   const fetchAnswers = async () => {
     try {
-      const response = await fetch("/api/vote/myanswers", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/vote/myanswers`, {
         method: "GET",
         credentials: "include",
         headers: {
