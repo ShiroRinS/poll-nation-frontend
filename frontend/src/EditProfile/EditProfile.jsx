@@ -134,6 +134,7 @@ function EditProfile() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        mode: 'cors', // Enable CORS for cross-origin requests
       });
 
       const data = await response.json();
@@ -173,6 +174,7 @@ function EditProfile() {
         dispatch(deleteUserStart());
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/delete/${currentUser._id}`, {
           method: "DELETE",
+          mode: 'cors', // Enable CORS for cross-origin requests
         });
 
         const data = await response.json();

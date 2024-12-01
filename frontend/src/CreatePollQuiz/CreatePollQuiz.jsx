@@ -49,13 +49,14 @@ function CreatePollQuiz() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/poll-and-quiz/create', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/poll-and-quiz/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ question, type, options }),
         credentials: 'include', // Include credentials to send cookies
+        mode: 'cors', // Enable CORS for cross-origin requests
       });
 
       const data = await response.json();

@@ -25,6 +25,7 @@ function PollAll() {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/poll-and-quiz/all`, {
           method: "GET",
           credentials: "include",
+          mode: 'cors', // Enable CORS for cross-origin requests
         });
 
         if (!response.ok) {
@@ -66,6 +67,7 @@ function PollAll() {
           "Content-Type": "application/json",
         },
         credentials: "include",
+        mode: 'cors', // Enable CORS for cross-origin requests
         body: JSON.stringify({
           userId,
           postId,
@@ -101,6 +103,7 @@ const preSelectOptions = async () => {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/vote/myanswers`, {
       method: "GET",
       credentials: "include",
+      mode: 'cors', // Enable CORS for cross-origin requests
       headers: {
         "Authorization": `Bearer ${currentUser?.token}`,
       },
@@ -162,6 +165,7 @@ useEffect(() => {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/comments/find/posts/${postId}`, {
           method: "GET",
           credentials: "include",
+          mode: 'cors', // Enable CORS for cross-origin requests
         });
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -185,6 +189,7 @@ useEffect(() => {
           "Content-Type": "application/json",
         },
         credentials: "include",
+        mode: 'cors', // Enable CORS for cross-origin requests
         body: JSON.stringify({
           postId,
           content: commentInputs[postId],
@@ -237,6 +242,7 @@ useEffect(() => {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/vote/myanswers`, {
         method: "GET",
         credentials: "include",
+        mode: 'cors', // Enable CORS for cross-origin requests
         headers: {
           "Authorization": `Bearer ${currentUser.token}`,
         },

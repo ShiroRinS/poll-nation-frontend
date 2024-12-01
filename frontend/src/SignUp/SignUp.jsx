@@ -33,6 +33,7 @@ export default function SignUp() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData), // Send form data
+        mode: 'cors', // Enable CORS for cross-origin requests
       });
       const data = await res.json();
 
