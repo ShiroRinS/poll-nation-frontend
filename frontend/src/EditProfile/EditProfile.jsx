@@ -130,7 +130,7 @@ function EditProfile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const response = await fetch(`/api/user/update/${currentUser._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/update/${currentUser._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -171,7 +171,7 @@ function EditProfile() {
     ) {
       try {
         dispatch(deleteUserStart());
-        const response = await fetch(`/api/user/delete/${currentUser._id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/delete/${currentUser._id}`, {
           method: "DELETE",
         });
 
