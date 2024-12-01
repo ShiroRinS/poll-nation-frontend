@@ -1,0 +1,167 @@
+/* Basic styling */
+.navbar {
+    position: sticky;
+    top: 10px; /* Adds 10px space from the top when sticky */
+    margin: 0 auto; /* Centers the navbar horizontally */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #333;
+    color: #fff;
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    width: 55%; /* Fixed width for the navbar */
+    z-index: 1000; /* Ensure it stays above other content */
+}
+
+
+
+/* Logo styling */
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.logoLink {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Navigation Links */
+.navLinks {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.navLinks li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.active a {
+    color: #4caf50;
+    font-weight: bold;
+    border-bottom: 2px solid #4caf50;
+}
+
+/* Hover effect for links */
+a:hover {
+    color: #eeeeee;
+}
+
+/* Hamburger menu (for mobile) */
+.hamburger {
+    display: none;
+    cursor: pointer;
+}
+
+.hamburger .line {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 5px 0;
+    transition: 0.3s;
+}
+
+/* Profile Picture */
+.profilePic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 9px;
+    vertical-align: middle;
+}
+/* Dropdown Container */
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    list-style: none;
+    padding: 10px 0;
+    min-width: 150px;
+    z-index: 1000;
+}
+
+.dropdownMenu li {
+    padding: 10px 15px;
+    color: #fff;
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdownMenu li:hover {
+    background-color: #444;
+}
+
+/* Profile Section */
+.profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.profileToggle {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profileToggle span {
+    margin-right: 5px;
+    color: #fff;
+}
+
+.arrow {
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+/* Logout Button */
+.logoutButton {
+    color: red;
+    font-weight: bold;
+    text-align: left;
+}
+
+.logoutButton:hover {
+    color: darkred;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .navbar {
+        width: 90%; /* Make the navbar narrower on smaller screens */
+    }
+
+    .navLinks {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 50%; /* Center the menu horizontally */
+        transform: translateX(-50%);
+        width: 90%; /* Slightly narrower for better mobile view */
+        background-color: #333;
+        text-align: center;
+        gap: 1rem;
+        padding: 1rem 0;
+        transition: all 0.3s ease;
+        border-radius: 15px; /* Rounded corners for the mobile menu */
+    }
+
+    .navLinks.open {
+        display: flex;
+    }
+
+    .hamburger {
+        display: block;
+    }
+}

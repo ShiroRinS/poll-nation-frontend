@@ -1,0 +1,196 @@
+/* Main Container */
+.editProfile {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+/* Profile Picture Section */
+.pictureSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profilePicContainer {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Profile Image */
+.imageWrapper {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+}
+
+.profilePic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.imageWrapper:hover .profilePic {
+    opacity: 0.5;
+    transform: scale(1.05);
+}
+
+.hoverEffect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: background 0.3s ease, opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.imageWrapper:hover .hoverEffect {
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+}
+
+.hoverEffect i {
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+.uploadInput {
+    display: none;
+}
+
+.uploadButton {
+    background-color: #ddd;
+    padding: 8px 16px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.recommendationText {
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* Form Labels and Inputs */
+.label {
+    font-weight: bold;
+    display: block;
+    text-align: left;
+    margin: 15px 0 5px;
+}
+
+.input,
+.textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.textarea {
+    height: 80px;
+    resize: none;
+}
+
+/* Button Group (Save and Cancel Buttons) */
+.buttonGroup {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 20px;
+}
+
+.cancelButton {
+    background-color: #bbb;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.saveButton {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+/* Delete Account Button (outside the form) */
+.deleteButtonContainer {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    margin-top: -58px;
+}
+
+.deleteAccountButton {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.deleteAccountButton:hover {
+    background-color: #e60000;
+}
+
+/* Image Status */
+.image_status {
+    font-size: 0.875rem;
+    align-self: center;
+}
+
+.error_text {
+    color: #b91c1c;
+}
+
+.uploading_text {
+    color: #374151;
+}
+
+.success_text {
+    color: #047857;
+}
