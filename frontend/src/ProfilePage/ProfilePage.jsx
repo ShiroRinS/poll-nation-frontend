@@ -21,9 +21,10 @@ function ProfilePage() {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`/api/poll-and-quiz/${username}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/poll-and-quiz/${username}`, {
                     method: 'GET',
                     credentials: 'include', // Include cookies for authentication
+                    mode: 'no-cors', // Enable CORS for cross-origin requests
                 });
 
                 if (!response.ok) {

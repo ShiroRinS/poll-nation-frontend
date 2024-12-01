@@ -22,7 +22,7 @@ function EditPollQuiz() {
             "Content-Type": "application/json",
           },
           credentials: "include", // Include credentials to send cookies
-          mode: 'cors', // Enable CORS for cross-origin requests
+          mode: 'no-cors', // Enable CORS for cross-origin requests
         });
         const data = await response.json();
 
@@ -78,7 +78,7 @@ function EditPollQuiz() {
         },
         body: JSON.stringify({ question, options }),
         credentials: "include",
-        mode: 'cors', // Enable CORS for cross-origin requests
+        mode: 'no-cors', // Enable CORS for cross-origin requests
       });
 
       const data = await response.json();

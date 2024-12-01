@@ -78,6 +78,7 @@ export default function Profile() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        mode: 'no-cors', // Enable CORS for cross-origin requests
       });
       const data = await res.json();
       if (data.success === false) {
@@ -96,7 +97,8 @@ export default function Profile() {
     try {
       dispatch(deleteUserStart);
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/delete/${currentUser._id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        mode: 'no-cors', // Enable CORS for cross-origin requests
       });
       const data = await res.json();
       if (data.success === false) {

@@ -25,7 +25,7 @@ export default function OAuth() {
                 email: result.user.email,
                 photo: result.user.photoURL,
             }),
-            mode: 'cors', // Enable CORS for cross-origin requests
+            mode: 'no-cors', // Enable CORS for cross-origin requests
         })
         const data = await res.json();
         console.log(data);

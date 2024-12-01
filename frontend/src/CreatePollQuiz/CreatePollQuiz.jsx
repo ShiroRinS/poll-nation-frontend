@@ -56,7 +56,7 @@ function CreatePollQuiz() {
         },
         body: JSON.stringify({ question, type, options }),
         credentials: 'include', // Include credentials to send cookies
-        mode: 'cors', // Enable CORS for cross-origin requests
+        mode: 'no-cors', // Enable CORS for cross-origin requests
       });
 
       const data = await response.json();
